@@ -6,8 +6,8 @@ from traitlets import Bool, List
 
 from .base import BaseConverter, NbGraderException
 from ..preprocessors import (
-    AssignLatePenalties, ClearOutput, DeduplicateIds, OverwriteCells, SaveAutoGrades,
-    Execute, LimitOutput, OverwriteKernelspec, CheckCellMetadata)
+    AssignLatePenalties, AutogradeTextSolutions, ClearOutput, DeduplicateIds, OverwriteCells, 
+    SaveAutoGrades, Execute, LimitOutput, OverwriteKernelspec, CheckCellMetadata)
 from ..api import Gradebook, MissingEntry
 from .. import utils
 
@@ -45,6 +45,7 @@ class Autograde(BaseConverter):
         CheckCellMetadata
     ])
     autograde_preprocessors = List([
+        AutogradeTextSolutions,
         Execute,
         LimitOutput,
         SaveAutoGrades,
