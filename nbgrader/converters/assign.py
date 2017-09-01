@@ -54,11 +54,11 @@ class Assign(BaseConverter):
     preprocessors = List([
         IncludeHeaderFooter,
         LockCells,
-        ClearSolutions,
         ClearOutput,
         CheckCellMetadata,
         ComputeChecksums,
         SaveCells,
+        ClearSolutions,
         ClearHiddenTests,
         ComputeChecksums,
         CheckCellMetadata,
