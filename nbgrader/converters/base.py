@@ -4,6 +4,7 @@ import re
 import shutil
 import sqlalchemy
 import traceback
+import zipfile #to make an archive
 
 from traitlets.config import LoggingConfigurable, Config
 from traitlets import Bool, List, Dict, Integer, Instance, Type
@@ -98,15 +99,16 @@ class BaseConverter(LoggingConfigurable):
         return self.coursedir.format_path(self._output_directory, student_id, assignment_id, escape=escape)
 
     def init_notebooks(self):
-        self.assignments = {}
+        self.assignments = {} #dictionary that stores all the assignments and their respective notebook files
         self.notebooks = []
         fullglob = self._format_source(self.coursedir.assignment_id, self.coursedir.student_id)
-        for assignment in glob.glob(fullglob):
+        for assignment in glob.glob(fullglob): #for each assignment example ps1, ps2...
+            self.log.info("Assignment '%s'", assignment)
             found = glob.glob(os.path.join(assignment, self.coursedir.notebook_id + ".ipynb"))
             if len(found) == 0:
                 self.log.warning("No notebooks were matched in '%s'", assignment)
                 continue
-            self.assignments[assignment] = found
+            self.assignments[assignment] = found #assignments[ps1] = list of all .ipynb files
 
         if len(self.assignments) == 0:
             msg = "No notebooks were matched by '%s'" % fullglob
@@ -266,7 +268,7 @@ class BaseConverter(LoggingConfigurable):
                         self.log.warning("Removing failed notebook: {}".format(path))
                         remove(path)
 
-        for assignment in sorted(self.assignments.keys()):
+        for assignment in sorted(self.assignments.keys()): # assignment holds the path of the course
             # initialize the list of notebooks and the exporter
             self.notebooks = sorted(self.assignments[assignment])
 
@@ -291,6 +293,9 @@ class BaseConverter(LoggingConfigurable):
                 # convert all the notebooks
                 for notebook_filename in self.notebooks:
                     self.convert_single_notebook(notebook_filename)
+
+                # Function to make the archive file
+                self.write_to_archive()
 
                 # set assignment permissions
                 self.set_permissions(gd['assignment_id'], gd['student_id'])
@@ -348,3 +353,25 @@ class BaseConverter(LoggingConfigurable):
 
             self.log.error(msg)
             raise NbGraderException(msg)
+
+    def write_to_archive(self):
+        '''
+        Function to write the notebooks released into an archive file
+        '''
+
+        problem_set_name = os.path.basename(self.writer.build_directory)
+
+        self.log.info("Creating .zip file in directory: %s" %(self.writer.build_directory+"/"))
+
+        #create an empty archive for the particular problem set.
+        archive = zipfile.ZipFile(self.writer.build_directory+"/"+problem_set_name+".zip",'w')
+
+        all_notebooks_to_archive = glob.glob(self.writer.build_directory+"/*.ipynb")
+
+        for notebook_to_archive in all_notebooks_to_archive:
+            filename = notebook_to_archive.split("/")[-1]
+            archive.write(os.path.join(self.writer.build_directory, filename), filename)
+
+
+        self.log.info("The archive has been created.")
+        archive.close()
