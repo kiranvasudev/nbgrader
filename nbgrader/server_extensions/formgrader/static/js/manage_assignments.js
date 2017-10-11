@@ -146,6 +146,13 @@ var AssignmentUI = Backbone.View.extend({
                 .append($("<span/>")
                     .addClass("glyphicon glyphicon-search")
                     .attr("aria-hidden", "true")));
+
+            this.$download_archive.append($("<a/>")
+                    .attr("href", "#")
+                    .click(_.bind(this.download_archive, this)) // need to change the on click function
+                    .append($("<span/>")
+                        .addClass("glyphicon glyphicon-floppy-disk")
+                        .attr("aria-hidden", "true")));
         }
 
         // release
@@ -158,26 +165,12 @@ var AssignmentUI = Backbone.View.extend({
                     .append($("<span/>")
                         .addClass("glyphicon glyphicon-cloud-upload")
                         .attr("aria-hidden", "true")));
-
-                this.$download_archive($("<a/>")
-                    .attr("href", "#")
-                    .click(_.bind(this.release, this))
-                    .append($("<span/>")
-                        .addClass("glyphicon glyphicon-floppy-disk")
-                        .attr("aria-hidden", "true")));
             } else {
                 this.$release.append($("<a/>")
                     .attr("href", "#")
                     .click(_.bind(this.unrelease, this))
                     .append($("<span/>")
                         .addClass("glyphicon glyphicon-remove")
-                        .attr("aria-hidden", "true")));
-
-                this.$download_archive($("<a/>")
-                    .attr("href", "#")
-                    .click(_.bind(this.unrelease, this))
-                    .append($("<span/>")
-                        .addClass("glyphicon glyphicon-floppy-disk")
                         .attr("aria-hidden", "true")));
             }
         }
@@ -232,7 +225,7 @@ var AssignmentUI = Backbone.View.extend({
                 response["log"],
                 response["error"]);
         }
-    },.num-submissions
+    },
 
     assign_failure: function (response) {
         this.model.fetch();
@@ -240,6 +233,11 @@ var AssignmentUI = Backbone.View.extend({
             "error-modal",
             "Error",
             "There was an error creating the student version of '" + this.model.get("name") + "'.");
+    },
+
+    download_archive: function() {
+        console.log(base_url);
+        assignment_name = this.$name.text();
     },
 
     unrelease: function () {
