@@ -236,7 +236,6 @@ var AssignmentUI = Backbone.View.extend({
     },
 
     download_archive: function() {
-        console.log(base_url);
         assignment_name = this.$name.text();
     },
 
