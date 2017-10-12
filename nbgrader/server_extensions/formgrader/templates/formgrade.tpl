@@ -98,13 +98,20 @@ window.MathJax = {
   <span class="nbgrader-label"><code>{{ cell.metadata.nbgrader.grade_id }}</code></span>
   {{ score(cell) }}
 {%- endif -%}
-</div>  
+</div>
 {%- endmacro %}
 
 {% macro nbgrader_footer(cell) -%}
 {%- if cell.metadata.nbgrader.solution -%}
 <div class="panel-footer">
-  <div><textarea id="{{ cell.metadata.nbgrader.grade_id }}-comment" class="comment tabbable"></textarea></div>
+  <div>
+    <h4>Enter feedback here</h4>
+    <textarea id="{{ cell.metadata.nbgrader.grade_id }}-comment" class="comment tabbable form-control"></textarea>
+  </div>
+  <div>
+    <h4>Below is the expected answer</h4>
+    <textarea id="{{ cell.metadata.nbgrader.grade_id }}-expected" class="form-control" disabled></textarea>
+  </div>
 </div>
 {%- endif -%}
 {%- endmacro %}
@@ -150,7 +157,7 @@ window.MathJax = {
   </div>
 
   {%- else -%}
-  
+
   <div class="inner_cell">
     <div class="input_area">
       {{ cell.source | highlight_code(metadata=cell.metadata) }}
