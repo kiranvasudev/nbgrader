@@ -229,3 +229,29 @@ div.nbgrader_cell .input_area {
 .breadcrumb .glyphicon {
   margin-left: 5px;
 }
+
+/*Custom CSS for textarea of the expected answer*/
+.markdown-soln{
+  background: white !important;
+  resize: none !important;
+}
+
+.markdown-soln::-webkit-input-placeholder {
+  color: black !important;
+  font-size: 1.125em;
+}
+
+.markdown-soln:-moz-placeholder { /* Firefox 18- */
+  color: black !important;
+  font-size: 1.125em;
+}
+
+.markdown-soln::-moz-placeholder {  /* Firefox 19+ */
+  color: black !important;
+  font-size: 1.125em;
+}
+
+.markdown-soln:-ms-input-placeholder {
+  color: black !important;
+  font-size: 1.125em;
+}

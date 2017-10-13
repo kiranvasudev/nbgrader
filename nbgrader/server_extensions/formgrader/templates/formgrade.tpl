@@ -105,13 +105,15 @@ window.MathJax = {
 {%- if cell.metadata.nbgrader.solution -%}
 <div class="panel-footer">
   <div>
-    <h4>Enter feedback here</h4>
+    <h4>Feedback:</h4>
     <textarea id="{{ cell.metadata.nbgrader.grade_id }}-comment" class="comment tabbable form-control"></textarea>
   </div>
+  {%- if cell.cell_type == "markdown" -%}
   <div>
-    <h4>Below is the expected answer</h4>
-    <textarea id="{{ cell.metadata.nbgrader.grade_id }}-expected" class="form-control" disabled></textarea>
+    <h4>Expected answer:</h4>
+    <textarea id="{{ cell.metadata.nbgrader.grade_id }}-expected" class="markdown-soln form-control" placeholder="{{ cell.text }}" readonly></textarea>
   </div>
+  {%- endif -%}
 </div>
 {%- endif -%}
 {%- endmacro %}
@@ -160,7 +162,7 @@ window.MathJax = {
 
   <div class="inner_cell">
     <div class="input_area">
-      {{ cell.source | highlight_code(metadata=cell.metadata) }}
+        {{ cell.source | highlight_code(metadata=cell.metadata) }}
     </div>
   </div>
   {%- endif -%}

@@ -85,6 +85,9 @@ class AutogradeTextSolutions(NbGraderPreprocessor):
         # -- if its a solution and grade and its markdown
         # Then run autograde on this text
         if is_solution and is_grade and is_markdown :
+            #cell['markdown_answer'] = source_cell.source
+            #cell['source']= cell['source'] +"###" +source_cell.source
+            cell['text'] = source_cell.source
             replaced_solution = self._autograde_solution_region(cell, source_cell.source)
         else:
             replaced_solution = False

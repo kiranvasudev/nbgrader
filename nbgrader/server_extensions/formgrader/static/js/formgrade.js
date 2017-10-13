@@ -18,6 +18,9 @@ FormGrader.prototype.init = function () {
     this.loadGrades();
     this.loadComments();
 
+    this.dumb_value = "DUMB VALUE"
+    dada_value = "DADADDADA"
+
     // disable link selection on tabs
     $('a:not(.tabbable)').attr('tabindex', '-1');
 
