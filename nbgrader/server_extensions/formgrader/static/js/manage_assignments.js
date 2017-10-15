@@ -148,8 +148,10 @@ var AssignmentUI = Backbone.View.extend({
                     .attr("aria-hidden", "true")));
 
             this.$download_archive.append($("<a/>")
-                    .attr("href", "#")
-                    .click(_.bind(this.download_archive, this)) // need to change the on click function
+                    .attr({
+                        href: base_url + "/tree/" + url_prefix + "/" + release_path + "/" + this.$name.text() + ".zip",
+                        download: this.$name.text()
+                    })
                     .append($("<span/>")
                         .addClass("glyphicon glyphicon-floppy-disk")
                         .attr("aria-hidden", "true")));
@@ -233,10 +235,6 @@ var AssignmentUI = Backbone.View.extend({
             "error-modal",
             "Error",
             "There was an error creating the student version of '" + this.model.get("name") + "'.");
-    },
-
-    download_archive: function() {
-        assignment_name = this.$name.text();
     },
 
     unrelease: function () {
