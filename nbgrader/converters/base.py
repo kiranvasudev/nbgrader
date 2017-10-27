@@ -4,7 +4,7 @@ import re
 import shutil
 import sqlalchemy
 import traceback
-import zipfile #to make an archive
+import zipfile
 
 from traitlets.config import LoggingConfigurable, Config
 from traitlets import Bool, List, Dict, Integer, Instance, Type
@@ -99,16 +99,15 @@ class BaseConverter(LoggingConfigurable):
         return self.coursedir.format_path(self._output_directory, student_id, assignment_id, escape=escape)
 
     def init_notebooks(self):
-        self.assignments = {} #dictionary that stores all the assignments and their respective notebook files
+        self.assignments = {}
         self.notebooks = []
         fullglob = self._format_source(self.coursedir.assignment_id, self.coursedir.student_id)
-        for assignment in glob.glob(fullglob): #for each assignment example ps1, ps2...
-            self.log.info("Assignment '%s'", assignment)
+        for assignment in glob.glob(fullglob):
             found = glob.glob(os.path.join(assignment, self.coursedir.notebook_id + ".ipynb"))
             if len(found) == 0:
                 self.log.warning("No notebooks were matched in '%s'", assignment)
                 continue
-            self.assignments[assignment] = found #assignments[ps1] = list of all .ipynb files
+            self.assignments[assignment] = found
 
         if len(self.assignments) == 0:
             msg = "No notebooks were matched by '%s'" % fullglob
@@ -268,7 +267,7 @@ class BaseConverter(LoggingConfigurable):
                         self.log.warning("Removing failed notebook: {}".format(path))
                         remove(path)
 
-        for assignment in sorted(self.assignments.keys()): # assignment holds the path of the course
+        for assignment in sorted(self.assignments.keys()):
             # initialize the list of notebooks and the exporter
             self.notebooks = sorted(self.assignments[assignment])
 
