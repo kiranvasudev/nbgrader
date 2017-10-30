@@ -294,7 +294,6 @@ class BaseConverter(LoggingConfigurable):
                     self.convert_single_notebook(notebook_filename)
 
                 # Function to make the archive file
-                #self.write_to_archive()
                 self.makeArchive()
 
                 # set assignment permissions
@@ -355,16 +354,8 @@ class BaseConverter(LoggingConfigurable):
             raise NbGraderException(msg)
 
     def recursiveArchive(self, directory, archiveName):
-        '''
-        Recursive function to archive contents of a directory
-        '''
-
-        # work with all the files and folders in the current dir
         allFilesFolders = [ item for item in os.listdir(directory) if item != archiveName+".zip" ]
 
-        #iterate through all files and folders
-        #if folder then call function again
-        #if file, write to archive
         for item in allFilesFolders:
             fullPath = os.path.join(directory, item)
             if os.path.isfile(fullPath):
@@ -373,9 +364,6 @@ class BaseConverter(LoggingConfigurable):
                 self.recursiveArchive(fullPath, archiveName)
 
     def makeArchive(self):
-        '''
-        Function that archives the contents of the assignment to be released.
-        '''
         currentDir = self.writer.build_directory
         archiveName = os.path.basename(self.writer.build_directory)
 
