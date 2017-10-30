@@ -294,7 +294,8 @@ class BaseConverter(LoggingConfigurable):
                     self.convert_single_notebook(notebook_filename)
 
                 # Function to make the archive file
-                self.write_to_archive()
+                #self.write_to_archive()
+                self.makeArchive()
 
                 # set assignment permissions
                 self.set_permissions(gd['assignment_id'], gd['student_id'])
@@ -353,24 +354,41 @@ class BaseConverter(LoggingConfigurable):
             self.log.error(msg)
             raise NbGraderException(msg)
 
-    def write_to_archive(self):
+    def recursiveArchive(self, directory, archiveName):
         '''
-        Function to write the notebooks released into an archive file
+        Recursive function to archive contents of a directory
         '''
 
-        problem_set_name = os.path.basename(self.writer.build_directory)
+        # work with all the files and folders in the current dir
+        allFilesFolders = [ item for item in os.listdir(directory) if item != archiveName+".zip" ]
 
-        self.log.info("Creating .zip file in directory: %s" %(self.writer.build_directory+"/"))
+        #iterate through all files and folders
+        #if folder then call function again
+        #if file, write to archive
+        for item in allFilesFolders:
+            fullPath = os.path.join(directory, item)
+            if os.path.isfile(fullPath):
+                self.archive.write(os.path.join(self.writer.build_directory, fullPath.split(archiveName)[-1][1:]), archiveName+"/"+fullPath.split(archiveName)[-1][1:])
+            elif os.path.isdir(fullPath):
+                self.recursiveArchive(fullPath, archiveName)
 
-        #create an empty archive for the particular problem set.
-        archive = zipfile.ZipFile(self.writer.build_directory+"/"+problem_set_name+".zip",'w')
+    def makeArchive(self):
+        '''
+        Function that archives the contents of the assignment to be released.
+        '''
+        currentDir = self.writer.build_directory
+        archiveName = os.path.basename(self.writer.build_directory)
 
-        all_notebooks_to_archive = glob.glob(self.writer.build_directory+"/*.ipynb")
+        self.log.info(os.listdir(currentDir))
+        self.log.info(archiveName)
 
-        for notebook_to_archive in all_notebooks_to_archive:
-            filename = notebook_to_archive.split("/")[-1]
-            archive.write(os.path.join(self.writer.build_directory, filename), filename)
+        if archiveName+".zip" in os.listdir(currentDir):
+            os.remove(currentDir+"/"+archiveName+".zip")
+            self.log.info("Zip file already exists. File removed.")
 
+        self.archive = zipfile.ZipFile(currentDir+"/"+archiveName+".zip", 'w', compression=zipfile.ZIP_DEFLATED)
 
+        self.recursiveArchive(currentDir, archiveName)
+
+        self.archive.close()
         self.log.info("The archive has been created.")
-        archive.close()
