@@ -359,7 +359,7 @@ class BaseConverter(LoggingConfigurable):
         for item in allFilesFolders:
             fullPath = os.path.join(directory, item)
             if os.path.isfile(fullPath):
-                self.archive.write(os.path.join(self.writer.build_directory, fullPath.split(archiveName)[-1][1:]), archiveName+"/"+fullPath.split(archiveName)[-1][1:])
+                self.archive.write(os.path.join(self.writer.build_directory, fullPath.split(archiveName)[-1][1:]), archiveName+"/"+fullPath.split(archiveName, 1)[-1][1:])
             elif os.path.isdir(fullPath):
                 self.recursiveArchive(fullPath, archiveName)
 
