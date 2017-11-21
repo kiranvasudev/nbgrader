@@ -89,17 +89,17 @@ for instructions.
   <th class="text-center no-sort">Release</th>
   <th class="text-center no-sort">Collect</th>
   <th class="text-center"># Submissions</th>
-  <th class="text-center no-sort">Download as .zip</th>
+  <!-- <th class="text-center no-sort">Download as .zip</th> -->
 </tr>
 {%- endblock -%}
 
 {%- block table_body -%}
-<tr><td colspan="10">Loading, please wait...</td></tr>
+<tr><td colspan="9">Loading, please wait...</td></tr>
 {%- endblock -%}
 
 {%- block table_footer -%}
 <tr>
-  <td colspan="10">
+  <td colspan="9">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     <a href="#" onClick="createAssignmentModal();">Add new assignment...</a>
   </td>

@@ -27,7 +27,6 @@ var AssignmentUI = Backbone.View.extend({
         this.$release = this.$el.find(".release");
         this.$collect = this.$el.find(".collect");
         this.$num_submissions = this.$el.find(".num-submissions");
-        this.$download_archive = this.$el.find(".download-archive");
 
         this.listenTo(this.model, "change", this.render);
         this.listenTo(this.model, "request", this.animateSaving);
@@ -87,7 +86,6 @@ var AssignmentUI = Backbone.View.extend({
         this.$release.empty();
         this.$collect.empty();
         this.$num_submissions.empty();
-        this.$download_archive.empty();
     },
 
     render: function () {
@@ -147,14 +145,18 @@ var AssignmentUI = Backbone.View.extend({
                     .addClass("glyphicon glyphicon-search")
                     .attr("aria-hidden", "true")));
 
-            this.$download_archive.append($("<a/>")
+            this.$release.append($("<a/>")
                     .attr({
                         href: base_url + "/tree/" + url_prefix + "/" + release_path + "/" + this.$name.text() + ".zip",
                         download: this.$name.text()
                     })
                     .append($("<span/>")
                         .addClass("glyphicon glyphicon-floppy-disk")
-                        .attr("aria-hidden", "true")));
+                        .attr("aria-hidden", "true"))
+                    .append($("<span/>")
+                        .addClass("glyphicon glyphicon-option-vertical")
+                        .attr("aria-hidden", "true")
+                        .attr("style", "margin: 0 5%")));
         }
 
         // release
@@ -384,7 +386,6 @@ var insertRow = function (table) {
     row.append($("<td/>").addClass("text-center release"));
     row.append($("<td/>").addClass("text-center collect"));
     row.append($("<td/>").addClass("text-center num-submissions"));
-    row.append($("<td/>").addClass("text-center download-archive"));
     table.append(row)
     return row;
 };
