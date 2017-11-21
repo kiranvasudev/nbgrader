@@ -152,11 +152,11 @@ var AssignmentUI = Backbone.View.extend({
                     })
                     .append($("<span/>")
                         .addClass("glyphicon glyphicon-floppy-disk")
-                        .attr("aria-hidden", "true"))
+                        .attr("aria-hidden", "true")))
                     .append($("<span/>")
                         .addClass("glyphicon glyphicon-option-vertical")
                         .attr("aria-hidden", "true")
-                        .attr("style", "margin: 0 5%")));
+                        .attr("style", "margin: 0 5%"));
         }
 
         // release
