@@ -8,6 +8,7 @@ import shutil
 import stat
 import logging
 import traceback
+import contextlib
 
 from setuptools.archive_util import unpack_archive
 from setuptools.archive_util import unpack_tarfile
@@ -15,6 +16,7 @@ from setuptools.archive_util import unpack_zipfile
 from contextlib import contextmanager
 from tornado.log import LogFormatter
 from dateutil.tz import gettz
+from datetime import datetime
 
 
 # pwd is for unix passwords only, so we shouldn't import it on
@@ -119,6 +121,11 @@ def parse_utc(ts):
     return ts
 
 
+def to_numeric_tz(timezone):
+    """Converts a timezone to a format which can be read by parse_utc."""
+    return as_timezone(datetime.utcnow(), timezone).strftime('%z')
+
+
 def as_timezone(ts, timezone):
     """Converts UTC timestamp ts to have timezone tz."""
     if not timezone:
@@ -218,6 +225,17 @@ def full_split(path):
         return (rest,)
     else:
         return full_split(rest) + (last,)
+
+
+@contextlib.contextmanager
+def chdir(dirname):
+    currdir = os.getcwd()
+    if dirname:
+        os.chdir(dirname)
+    try:
+        yield
+    finally:
+        os.chdir(currdir)
 
 
 def rmtree(path):

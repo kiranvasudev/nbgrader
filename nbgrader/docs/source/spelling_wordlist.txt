@@ -52,6 +52,7 @@ delimeters
 dementrock
 deprecations
 dev
+dir
 dirs
 dlsun
 doesn
@@ -111,6 +112,7 @@ ivanslapnicar
 ixjlyons
 I’m
 I’ve
+jcsutherland
 jdfreder
 jhamrick
 jilljenn
@@ -140,6 +142,8 @@ matplotlib
 metadata
 mikebolt
 minrk
+misolietavec
+mpacer
 multi
 namespace
 nbconvert
@@ -155,6 +159,7 @@ ok
 olgabot
 org
 osx
+overwritekernelspec
 phantomjs
 Phantomjs
 plugin
@@ -173,6 +178,7 @@ programmatically
 ps
 py
 quickstart
+rdpratti
 readonly
 readthedocs
 redSlug
